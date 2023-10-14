@@ -13,8 +13,8 @@ The neural models obtained from Keras are exported to __Wolfram Mathematica 11.3
 
 - `README.md` this file.
 - `dataset/` contains the folders with the training data:
-	- `coil/coil.py` script to pre-process the COIL dataset (available [here](https://www1.cs.columbia.edu/CAVE/software/softlib/coil-100.php))
-	- `amazon/amazon.py` script to pre-process the Amazon Picking Challenge dataset (available [here](https://rll.berkeley.edu/amazon_picking_challenge/))
+	- `coil/coil.py` script to pre-process the COIL dataset (download available [here](https://www1.cs.columbia.edu/CAVE/software/softlib/coil-100.php))
+	- `amazon/amazon.py` script to pre-process the Amazon Picking Challenge dataset (download available [here](https://rll.berkeley.edu/amazon_picking_challenge/))
 - `src/` contains the main files:
 	- `arch_net.py` defines the architectures of the neural models,
 	- `cnfg_01.py` and `cnfg_02.py` are two examples of configuration files used to execute the program,
@@ -27,36 +27,27 @@ The neural models obtained from Keras are exported to __Wolfram Mathematica 11.3
    	- `test_net.py` defines the testing routines to evaluate the models.
 
 ## Usage
-To run the program, execute the main script `src/main_exec.py `. The script supports the following command line arguments:
-
-```
-main_exec.py [-h] -c <file> -g <num> [-f <frac>] [-l <model>] [-Ttrsaex]
-```
-
-- `-a`, `--accur` execute accuracy evaluation on selected samples (`-a`) or on all test set (`-aa`) *(it may take a while!)*.
-- `-c <file>`, `--config <file>` pass a configuration file describing the model architecture and training parameters.
-- `-e`, `--eval` execute evaluation routines.
-- `-f <frac>`, `--fgpu <frac>` set the fraction of GPU memory to allocate *[default: 0.90]*.
-- `-g <num>`, `--gpu <num>` set the number of GPUs to use (0 if CPU) or list of GPU indices.
-- `-h`, `--help` show the help message with description of the arguments.
-- `-i`, `--intrp` execute interpolation tests.
-- `-l <model>`, `--load <model>` pass a folder or a HDF5 file to load as weights or entire model.
-- `-p`, `--pred` compute model predictions over a selected set of images.
-- `-r`, `--redir` redirect _stderr_ and _stdout_ to log files.
-- `-s`, `--save` archive configuration file (`-s`) and python scripts (`-ss`) used.
-- `-t`, `--test` execute testing routines.
+To run the program, execute the main script `main_exec.py `. The script supports the following command line arguments:
+- `-a`, `--angle` use a trained model in inverted mode to predict the angle,
+- `-c <file>`, `--config <file>` pass a configuration file (without extension) describing the model architecture and training parameters,
+- `-g <num>`, `--gpu <num>` set the number of GPUs to use (0 if CPU),
+- `-i <nlist>`, `--index <nlist>` pass indexes of data samples to be tested with graphic output,
+- `-l <model>`, `--load <model>` pass an HDF5 file to load as pre-trained model,
+- `-L`, `--latent` execute latent analysis of the model,
+- `-o <obj>`, `--object <obj>` pass the name of an object for which to show all shifted latents,
+- `-r`, `--redir` redirect _stderr_ and _stdout_ to log files,
+- `-s`, `--save` archive the configuration file and python scripts used,
+- `-t`, `--test` execute testing routines,
 - `-T`, `--train` execute training of the model.
-- `-x`, `--hallx` execute hallucination routines.
 
-
-As example, run the following command from the upmost `autoencoder/` folder. This command will train a new model on the first two GPUs on the machine. Then it will test the results, save all the files required to reproduce the experiment, and redirect all console messages to log files:
+For example, the following command trains a new model with architecture defined in the file `cnfg_01.py`. The execution uses one GPU, saves the sources files, and redirects all console messages to log files:
 
 ```
-$ python main_exec.py -c config/cnfg_file -g 0,1 -Ttssr
+$ python main_exec.py -c cnfg_01 -g 1 -Trs
 ```
 
-Another example, this command will load an already trained model and will execute all the test routines on CPU:
+In another example, the following command trains a new model using the *InceptionV3* architecture as indicated in the file `cnfg_02.py`. The execution uses only the CPU, saves the sources files, and redirects all console messages to log files:
 
 ```
-$ python main_exec.py -l log/nicemodel/nn_best.h5 -c log/nicemodel/config/cnfg_file -g 0 -taaeipx
+$ python main_exec.py -c cnfg_02 -g 0 -Trs
 ```
