@@ -12,28 +12,25 @@ The neural models obtained from Keras are exported to __Wolfram Mathematica 11.3
 ## Contents
 
 - `README.md` this file.
-- `dataset/` structure of folders containing all data used to train the models.
-- `src/` Python scripts:
-	- `arch.py` defines the architectures of neural models,
-	- `cnfg.py` handles command line arguments,
-	- `exec_dset.py` creates the structures of symlinks for building a dataset,
-	- `exec_eval.py` loads and evaluates a saved model,
-	- `exec_feat.py` generates dataset of latent space encodings,
-	- `exec_lata.py` is a collection of functions to analyze the latent space,
-	- `exec_main.py` is the main file to execute training,
-	- `gener.py` handles the *Generator* structures for parsing a dataset,
-	- `h5lib.py` is a collection of utilities for loading weights from an HDF5 file,
-	- `mesg.py` contains utilities for printing error messages,
-	- `pred.py` defines a class for non-neural time prediction,
-	- `sample_sel.py` contains a dictionary of manually-selected samples of different type of events,
-	- `tester.py` collects functions for testing a trained model,
-	- `trainer.py` contains the training routine.
+- `dataset/` contains the folders with the training data:
+	- `coil/coil.py` script to pre-process the COIL dataset (available [here](https://www1.cs.columbia.edu/CAVE/software/softlib/coil-100.php))
+	- `amazon/amazon.py` script to pre-process the Amazon Picking Challenge dataset (available [here](https://rll.berkeley.edu/amazon_picking_challenge/))
+- `src/` contains the main files:
+	- `arch_net.py` defines the architectures of the neural models,
+	- `cnfg_01.py` and `cnfg_02.py` are two examples of configuration files used to execute the program,
+	- `data_gen.py` handles the generation of the dataset for training and testing,
+ 	- `img_utils.py` contains utility functions for image visualization,
+	- `load_cnfg.py` loads the execution arguments passed from command line,     
+	- `load_model.py` contains utility funtions for loading trained models,
+   	- `main_exec.py` is the main file to execute the program,
+   	- `print_msg.py` contains utility funtions for printing info during execution,
+   	- `test_net.py` defines the testing routines to evaluate the models.
 
 ## Usage
-To run the program, execute the main script `src/exec_main.py `. The script supports the following command line arguments:
+To run the program, execute the main script `src/main_exec.py `. The script supports the following command line arguments:
 
 ```
-exec_main.py [-h] -c <file> -g <num> [-f <frac>] [-l <model>] [-Ttrsaex]
+main_exec.py [-h] -c <file> -g <num> [-f <frac>] [-l <model>] [-Ttrsaex]
 ```
 
 - `-a`, `--accur` execute accuracy evaluation on selected samples (`-a`) or on all test set (`-aa`) *(it may take a while!)*.
@@ -55,11 +52,11 @@ exec_main.py [-h] -c <file> -g <num> [-f <frac>] [-l <model>] [-Ttrsaex]
 As example, run the following command from the upmost `autoencoder/` folder. This command will train a new model on the first two GPUs on the machine. Then it will test the results, save all the files required to reproduce the experiment, and redirect all console messages to log files:
 
 ```
-$ python src/exec_main.py -c config/cnfg_file -g 0,1 -Ttssr
+$ python main_exec.py -c config/cnfg_file -g 0,1 -Ttssr
 ```
 
 Another example, this command will load an already trained model and will execute all the test routines on CPU:
 
 ```
-$ python src/exec_main.py -l log/nicemodel/nn_best.h5 -c log/nicemodel/config/cnfg_file -g 0 -taaeipx
+$ python main_exec.py -l log/nicemodel/nn_best.h5 -c log/nicemodel/config/cnfg_file -g 0 -taaeipx
 ```
